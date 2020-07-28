@@ -139,3 +139,32 @@ void prog2()
     display.display();
   }
 }
+
+void prog3()
+{
+  display.clearDisplay():
+  Serial.println("Программа 3 выполняется");
+   
+   if (enc.isClick())
+   {
+     Keyboard.press(KEY_ENTER);
+     Keyboard.release(KEY_ENTER);
+     display.println("ENTER");
+     display.display();
+   }
+   else if (enc.isLeft())
+   {
+     Keyboard.press(KEY_UP_ARROW);
+     Keyboard.release(KEY_UP_ARROW);
+     display.println("ARROW UP");
+     display.display();
+   }
+   else if (enc.isRight())
+   {
+     Keyboard.press(KEY_DOWN_ARROW);
+     Keyboard.release(KEY_DOWN_ARROW);
+     display.println("ARROW DOWN");
+     display.display();
+   }
+   
+}
