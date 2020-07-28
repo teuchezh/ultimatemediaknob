@@ -67,10 +67,11 @@ void hello()
   }
 }
 
-void prog1()
+void prog1() //layot for media control; раскладка для управления медиа;
 {
   display.clearDisplay();
-  Serial.println("Программа 1 выполняется");
+  Serial.println("*Layout 1 is works*");
+
   if (enc.isClick())
   {
     Consumer.write(MEDIA_PLAY_PAUSE);
@@ -101,15 +102,13 @@ void prog1()
     display.println("VOL DOWN");
     display.display();
   }
-  else
-  {
-  }
 }
 
-void prog2()
+void prog2() //layout for window switch; раскладка для переключения окон;
 {
   display.clearDisplay();
-  Serial.println("Программа 2 выполняется");
+  Serial.println("*Layout 2 is works*");
+
   if (enc.isDouble())
   {
     Keyboard.press(KEY_LEFT_ALT);
@@ -140,31 +139,72 @@ void prog2()
   }
 }
 
-void prog3()
+void prog3() //layout for.. hmm, i don't know, maybe use in browser for page scroll;
 {
-  display.clearDisplay():
-  Serial.println("Программа 3 выполняется");
-   
-   if (enc.isClick())
-   {
-     Keyboard.press(KEY_ENTER);
-     Keyboard.release(KEY_ENTER);
-     display.println("ENTER");
-     display.display();
-   }
-   else if (enc.isLeft())
-   {
-     Keyboard.press(KEY_UP_ARROW);
-     Keyboard.release(KEY_UP_ARROW);
-     display.println("ARROW UP");
-     display.display();
-   }
-   else if (enc.isRight())
-   {
-     Keyboard.press(KEY_DOWN_ARROW);
-     Keyboard.release(KEY_DOWN_ARROW);
-     display.println("ARROW DOWN");
-     display.display();
-   }
-   
+  Serial.println("*Layout 3 is works*");
+  display.clearDisplay();
+
+  if (enc.isClick())
+  {
+    Keyboard.press(KEY_ENTER);
+    Keyboard.release(KEY_ENTER);
+    display.println("ENTER");
+    display.display();
+  }
+  else if (enc.isLeft())
+  {
+    Keyboard.press(KEY_UP_ARROW);
+    Keyboard.release(KEY_UP_ARROW);
+    display.println("ARROW UP");
+    display.display();
+  }
+  else if (enc.isRight())
+  {
+    Keyboard.press(KEY_DOWN_ARROW);
+    Keyboard.release(KEY_DOWN_ARROW);
+    display.println("ARROW DOWN");
+    display.display();
+  }
+  //need code for release all leys? NEED DEBUG
+}
+
+void prog4(); //layout for tab switch in browser; раскладка для переключения между вкладками в браузере;
+{
+  Serial.println("*Layout 4 is works*");
+  display.clearDisplay();
+
+  if (enc.isLeft())
+  {
+    Keyboard.press(KEY_LEFT_CTRL);
+    Keyboard.press(KEY_PAGE_DOWN);
+    Keyboard.releaseAll();
+    Keyboard.release();
+    display.println("Previous Tab");
+    display.display();
+  }
+  else if (enc.isRight())
+  {
+    Keyboard.press(KEY_LEFT_CTRL);
+    Keyboard.press(KEY_PAGE_UP);
+    Keyboard.releaseAll("Next Tab");
+    display.println();
+    display.display();
+  }
+  else if (enc.isDouble())
+  {
+    Keyboard.press(KEY_LEFT_CTRL);
+    Keyboard.press(KEY_LEFT_SHIFT);
+    Keyboard.press(KEY_T);
+    Keyboard.releaseAll();
+    display.println("Open Closed Tab");
+    display.display();
+  }
+  else if (enc.isHolded())
+  {
+    Keyboard.press(KEY_LEFT_CTRL);
+    Keyboard.press(KEY_W);
+    Keyboard.releaseAll();
+    display.println("Open Closed Tab");
+    display.display();
+  }
 }
