@@ -19,8 +19,10 @@ GTimer hiTimer(MS);
 ///////////////////////////////////////////////////////
 const int pinLed = LED_BUILTIN;
 #include <GyverButton.h>
-#define BTN_PIN 7
-GButton lshift(BTN_PIN);
+#define SW1_PIN 7
+#define SW2_PIN 8
+GButton lshift(SW1_PIN);
+GButton rshift(SW2_PIN);
 ///////////////////////////////////////////////////////
 void setup()
 {
@@ -46,12 +48,23 @@ void loop()
   lshift.tick();
   if (lshift.isHold())
   {
-    prog2();
+    prog1();
   }
   else
   {
-    prog1();
+    prog2();
   }
+
+  rshift.tick();
+  if (rshift.isHold())
+  {
+    prog3();
+  }
+  else
+  {
+    //prog4();
+  }
+  
 }
 
 void hello()
@@ -168,7 +181,7 @@ void prog3() //layout for.. hmm, i don't know, maybe use in browser for page scr
   //need code for release all leys? NEED DEBUG
 }
 
-void prog4(); //layout for tab switch in browser; раскладка для переключения между вкладками в браузере;
+void prog4() //layout for tab switch in browser; раскладка для переключения между вкладками в браузере;
 {
   Serial.println("*Layout 4 is works*");
   display.clearDisplay();
@@ -178,7 +191,6 @@ void prog4(); //layout for tab switch in browser; раскладка для пе
     Keyboard.press(KEY_LEFT_CTRL);
     Keyboard.press(KEY_PAGE_DOWN);
     Keyboard.releaseAll();
-    Keyboard.release();
     display.println("Previous Tab");
     display.display();
   }
@@ -186,8 +198,8 @@ void prog4(); //layout for tab switch in browser; раскладка для пе
   {
     Keyboard.press(KEY_LEFT_CTRL);
     Keyboard.press(KEY_PAGE_UP);
-    Keyboard.releaseAll("Next Tab");
-    display.println();
+    Keyboard.releaseAll();
+    display.println("Next Tab");
     display.display();
   }
   else if (enc.isDouble())
@@ -204,7 +216,7 @@ void prog4(); //layout for tab switch in browser; раскладка для пе
     Keyboard.press(KEY_LEFT_CTRL);
     Keyboard.press(KEY_W);
     Keyboard.releaseAll();
-    display.println("Open Closed Tab");
+    display.println("Close Tab");
     display.display();
   }
 }
