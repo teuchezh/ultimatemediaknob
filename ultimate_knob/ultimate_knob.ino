@@ -21,8 +21,10 @@ const int pinLed = LED_BUILTIN;
 #include <GyverButton.h>
 #define SW1_PIN 7
 #define SW2_PIN 8
+#define SW3_PIN 9
 GButton lshift(SW1_PIN);
 GButton rshift(SW2_PIN);
+GButton ctrl(SW3_PIN);
 ///////////////////////////////////////////////////////
 void setup()
 {
@@ -44,27 +46,7 @@ void loop()
 {
   display.setCursor(0, 0);
   display.setTextSize(2);
-
-  lshift.tick();
-  if (lshift.isHold())
-  {
-    prog1();
-  }
-  else
-  {
-    prog2();
-  }
-
-  rshift.tick();
-  if (rshift.isHold())
-  {
-    prog3();
-  }
-  else
-  {
-    //prog4();
-  }
-  
+  check();
 }
 
 void hello()
@@ -80,6 +62,43 @@ void hello()
   }
 }
 
+void check()
+{
+  ctrl.tick();
+  if (ctrl.isSingle())
+  {
+    mod1();
+  }
+  else if (ctrl.isDouble())
+  {
+    mod2();
+  }
+}
+void mod1()
+{
+  lshift.tick();
+  if (lshift.isHold())
+  {
+    prog1();
+  }
+  else
+  {
+    prog2();
+  }
+}
+
+void mod2()
+{
+  rshift.tick();
+  if (rshift.isHold())
+  {
+    prog3();
+  }
+  else
+  {
+    prog4();
+  }
+}
 void prog1() //layot for media control; раскладка для управления медиа;
 {
   display.clearDisplay();
