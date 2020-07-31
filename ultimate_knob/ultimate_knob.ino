@@ -25,11 +25,14 @@ const int pinLed = LED_BUILTIN;
 GButton lshift(SW1_PIN);
 GButton rshift(SW2_PIN);
 GButton ctrl(SW3_PIN);
+#define MODES 4 // количество режимов (от 0 до указанного)
+byte mode = 0;
 ///////////////////////////////////////////////////////
 void setup()
 {
   enc.setType(TYPE2);
   enc.setTickMode(AUTO);
+  ctrl.setTickMode(AUTO);
   Keyboard.begin();
   System.begin();
   Serial.begin(9600);
@@ -44,9 +47,31 @@ void setup()
 
 void loop()
 {
+  ctrl.tick();
+  display.clearDisplay();
   display.setCursor(0, 0);
   display.setTextSize(2);
-  check();
+
+  if (ctrl.isPress())
+  {
+    if (++mode >= MODES)
+      mode = 0;
+  }
+  switch (mode)
+  {
+  case 0:
+    prog0();
+    break;
+  case 1:
+    prog1();
+    break;
+  case 2:
+    prog2();
+    break;
+  case 3:
+    prog3();
+    break;
+  }
 }
 
 void hello()
@@ -62,44 +87,7 @@ void hello()
   }
 }
 
-void check()
-{
-  ctrl.tick();
-  if (ctrl.isSingle())
-  {
-    mod1();
-  }
-  else if (ctrl.isDouble())
-  {
-    mod2();
-  }
-}
-void mod1()
-{
-  lshift.tick();
-  if (lshift.isHold())
-  {
-    prog1();
-  }
-  else
-  {
-    prog2();
-  }
-}
-
-void mod2()
-{
-  rshift.tick();
-  if (rshift.isHold())
-  {
-    prog3();
-  }
-  else
-  {
-    prog4();
-  }
-}
-void prog1() //layot for media control; раскладка для управления медиа;
+void prog0() //layot for media control; раскладка для управления медиа;
 {
   display.clearDisplay();
   Serial.println("*Layout 1 is works*");
@@ -136,7 +124,7 @@ void prog1() //layot for media control; раскладка для управле
   }
 }
 
-void prog2() //layout for window switch; раскладка для переключения окон;
+void prog1() //layout for window switch; раскладка для переключения окон;
 {
   display.clearDisplay();
   Serial.println("*Layout 2 is works*");
@@ -171,7 +159,7 @@ void prog2() //layout for window switch; раскладка для перекл�
   }
 }
 
-void prog3() //layout for.. hmm, i don't know, maybe use in browser for page scroll;
+void prog2() //layout for.. hmm, i don't know, maybe use in browser for page scroll;
 {
   Serial.println("*Layout 3 is works*");
   display.clearDisplay();
@@ -200,7 +188,7 @@ void prog3() //layout for.. hmm, i don't know, maybe use in browser for page scr
   //need code for release all leys? NEED DEBUG
 }
 
-void prog4() //layout for tab switch in browser; раскладка для переключения между вкладками в браузере;
+void prog3() //layout for tab switch in browser; раскладка для переключения между вкладками в браузере;
 {
   Serial.println("*Layout 4 is works*");
   display.clearDisplay();
