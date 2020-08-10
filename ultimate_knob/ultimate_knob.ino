@@ -1,3 +1,5 @@
+#include "bitmaps.h"
+#include <EEPROM.h>
 /////////////////////////////////////////////////////////
 #define CLK 4
 #define DT 5
@@ -26,10 +28,11 @@ GButton lshift(SW1_PIN);
 GButton rshift(SW2_PIN);
 GButton ctrl(SW3_PIN);
 #define MODES 4 // количество режимов (от 0 до указанного)
-byte mode = 0;
+byte mode = 0; //счетчик режимов
 ///////////////////////////////////////////////////////
 void setup()
 {
+  EEPROM.get(0, mode);
   enc.setType(TYPE2);
   enc.setTickMode(AUTO);
   ctrl.setTickMode(AUTO);
@@ -56,6 +59,7 @@ void loop()
   {
     if (++mode >= MODES)
       mode = 0;
+      EEPROM.put(0, mode); //Запись последнего режима в EEPROM
   }
   switch (mode)
   {
@@ -83,6 +87,7 @@ void hello()
   if (hiTimer.isReady())
   {
     display.clearDisplay();
+    display.display();
     Serial.println("Таймер сработал");
   }
 }
@@ -90,36 +95,36 @@ void hello()
 void prog0() //layot for media control; раскладка для управления медиа;
 {
   display.clearDisplay();
-  Serial.println("*Layout 1 is works*");
+  //Serial.println("*Layout 1 is works*");
 
   if (enc.isClick())
   {
     Consumer.write(MEDIA_PLAY_PAUSE);
-    display.println("PLAY/PAUSE");
+    display.drawBitmap(0, 0, PP, 128, 32, 1);
     display.display();
   }
   else if (enc.isDouble())
   {
     Consumer.write(MEDIA_NEXT);
-    display.println("NEXT");
+    display.drawBitmap(0, 0, NEXT, 128, 32, 1);
     display.display();
   }
   else if (enc.isHolded())
   {
     Consumer.write(MEDIA_VOL_MUTE);
-    display.println("MUTE");
+    display.drawBitmap(0, 0, MUTE, 128, 32, 1);
     display.display();
   }
   else if (enc.isRight())
   {
     Consumer.write(MEDIA_VOL_UP);
-    display.println("VOL UP");
+    display.drawBitmap(0, 0, VOLUP, 128, 32, 1);
     display.display();
   }
   else if (enc.isLeft())
   {
     Consumer.write(MEDIA_VOL_DOWN);
-    display.println("VOL DOWN");
+    display.drawBitmap(0, 0, VOLDOWN, 128, 32, 1);
     display.display();
   }
 }
@@ -127,7 +132,7 @@ void prog0() //layot for media control; раскладка для управле
 void prog1() //layout for window switch; раскладка для переключения окон;
 {
   display.clearDisplay();
-  Serial.println("*Layout 2 is works*");
+  //Serial.println("*Layout 2 is works*");
 
   if (enc.isDouble())
   {
@@ -161,9 +166,9 @@ void prog1() //layout for window switch; раскладка для перекл�
 
 void prog2() //layout for.. hmm, i don't know, maybe use in browser for page scroll;
 {
-  Serial.println("*Layout 3 is works*");
   display.clearDisplay();
-
+  //Serial.println("*Layout 3 is works*");
+  
   if (enc.isClick())
   {
     Keyboard.press(KEY_ENTER);
@@ -190,8 +195,8 @@ void prog2() //layout for.. hmm, i don't know, maybe use in browser for page scr
 
 void prog3() //layout for tab switch in browser; раскладка для переключения между вкладками в браузере;
 {
-  Serial.println("*Layout 4 is works*");
   display.clearDisplay();
+  //Serial.println("*Layout 4 is works*");
 
   if (enc.isLeft())
   {
