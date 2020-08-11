@@ -1,6 +1,0 @@
-{
-    "board": "arduino:avr:leonardo",
-    "port": "COM3",
-    "programmer": "AVRISP mkII",
-    "sketch": "ultimate_knob\\ultimate_knob.ino"
-}
