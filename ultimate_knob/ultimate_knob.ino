@@ -1,3 +1,11 @@
+#include "microLED.h"
+#define LED_PIN 8
+#define ORDER_GRB
+#define COLOR_DEBTH 2
+#define NUMLEDS 4
+LEDdata leds[NUMLEDS];  // буфер ленты типа LEDdata (размер зависит от COLOR_DEBTH)
+microLED strip(leds, NUMLEDS, LED_PIN);  // объект лента
+
 #include "bitmaps.h"
 #include <EEPROM.h>
 #include "HID-Project.h"
@@ -45,6 +53,11 @@ void setup()
 
   hiTimer.setTimeout(3000);
   hello();
+
+  strip.setBrightness(255);    // яркость (0-255)
+  strip.clear();   // очищает буфер
+  strip.fill(mCOLOR(YELLOW)); // заливаем жёлтым
+  strip.show(); // выводим изменения на ленту
 }
 
 void loop()
@@ -63,19 +76,19 @@ void loop()
   {
   case 0:
     prog0();
-    Serial.printl("Layout 1 enabled");
+    Serial.println("Layout 1 enabled");
     break;
   case 1:
     prog1();
-    Serial.printl("Layout 2 enabled");
+    Serial.println("Layout 2 enabled");
     break;
   case 2:
     prog2();
-    Serial.printl("Layout 3 enabled");
+    Serial.println("Layout 3 enabled");
     break;
   case 3:
     prog3();
-    Serial.printl("Layout 4 enabled");
+    Serial.println("Layout 4 enabled");
     break;
   }
 }
@@ -96,6 +109,9 @@ void hello()
 
 void prog0() //layot for media control; раскладка для управления медиа;
 {
+  strip.clear();   // очищает буфер
+  strip.fill(mCOLOR(GREEN)); // заливаем жёлтым
+  strip.show(); // выводим изменения на ленту
   display.clearDisplay();
   //Serial.println("*Layout 1 is works*");
 
@@ -133,6 +149,9 @@ void prog0() //layot for media control; раскладка для управле
 
 void prog1() //layout for window switch; раскладка для переключения окон;
 {
+  strip.clear();   // очищает буфер
+  strip.fill(mCOLOR(BLUE)); // заливаем жёлтым
+  strip.show(); // выводим изменения на ленту
   display.clearDisplay();
   //Serial.println("*Layout 2 is works*");
 
@@ -168,6 +187,9 @@ void prog1() //layout for window switch; раскладка для перекл�
 
 void prog2() //layout for.. hmm, i don't know, maybe use in browser for page scroll;
 {
+  strip.clear();   // очищает буфер
+  strip.fill(mCOLOR(YELLOW)); // заливаем жёлтым
+  strip.show(); // выводим изменения на ленту
   display.clearDisplay();
   //Serial.println("*Layout 3 is works*");
 
@@ -197,6 +219,9 @@ void prog2() //layout for.. hmm, i don't know, maybe use in browser for page scr
 
 void prog3() //layout for tab switch in browser; раскладка для переключения между вкладками в браузере;
 {
+  strip.clear();   // очищает буфер
+  strip.fill(mCOLOR(RED)); // заливаем жёлтым
+  strip.show(); // выводим изменения на ленту
   display.clearDisplay();
   //Serial.println("*Layout 4 is works*");
 
