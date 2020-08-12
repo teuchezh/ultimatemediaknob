@@ -1,34 +1,33 @@
 #include "bitmaps.h"
 #include <EEPROM.h>
-/////////////////////////////////////////////////////////
-#define CLK 4
-#define DT 5
-#define SW 6
 #include "HID-Project.h"
 #include <GyverEncoder.h>
-Encoder enc(CLK, DT, SW);
-////////////////////////////////////////////////////////
 #include <SPI.h>
 #include <Wire.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
+#include <GyverButton.h>
+#include "GyverTimer.h"
+/////////////////////////////////////////////////////////
+#define CLK 4
+#define DT 5
+#define SW 6
+Encoder enc(CLK, DT, SW);
+////////////////////////////////////////////////////////
 #define SCREEN_WIDTH 128
 #define SCREEN_HEIGHT 32
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT);
-///////////////////////////////////////////////////////
-#include "GyverTimer.h"
-GTimer hiTimer(MS);
-///////////////////////////////////////////////////////
-const int pinLed = LED_BUILTIN;
-#include <GyverButton.h>
+////////////////////////////////////////////////////////
 #define SW1_PIN 7
-#define SW2_PIN 8
-#define SW3_PIN 9
+#define SW2_PIN 9
 GButton lshift(SW1_PIN);
-GButton rshift(SW2_PIN);
-GButton ctrl(SW3_PIN);
+GButton ctrl(SW2_PIN);
+///////////////////////////////////////////////////////
 #define MODES 4 // количество режимов (от 0 до указанного)
-byte mode = 0; //счетчик режимов
+byte mode = 0;  //счетчик режимов
+
+GTimer hiTimer(MS);
+const int pinLed = LED_BUILTIN;
 ///////////////////////////////////////////////////////
 void setup()
 {
@@ -54,26 +53,29 @@ void loop()
   display.clearDisplay();
   display.setCursor(0, 0);
   display.setTextSize(2);
-
   if (ctrl.isPress())
   {
     if (++mode >= MODES)
-      mode = 0;
-      EEPROM.put(0, mode); //Запись последнего режима в EEPROM
+    mode = 0;
+    EEPROM.put(0, mode); //Запись последнего режима в EEPROM
   }
   switch (mode)
   {
   case 0:
     prog0();
+    Serial.printl("Layout 1 enabled");
     break;
   case 1:
     prog1();
+    Serial.printl("Layout 2 enabled");
     break;
   case 2:
     prog2();
+    Serial.printl("Layout 3 enabled");
     break;
   case 3:
     prog3();
+    Serial.printl("Layout 4 enabled");
     break;
   }
 }
@@ -168,7 +170,7 @@ void prog2() //layout for.. hmm, i don't know, maybe use in browser for page scr
 {
   display.clearDisplay();
   //Serial.println("*Layout 3 is works*");
-  
+
   if (enc.isClick())
   {
     Keyboard.press(KEY_ENTER);
@@ -190,7 +192,7 @@ void prog2() //layout for.. hmm, i don't know, maybe use in browser for page scr
     display.println("ARROW DOWN");
     display.display();
   }
-  //need code for release all leys? NEED DEBUG
+  //need code for release all keys? NEED DEBUG
 }
 
 void prog3() //layout for tab switch in browser; раскладка для переключения между вкладками в браузере;
